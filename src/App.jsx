@@ -33,6 +33,22 @@ function App() {
     });
   };
 
+  const genresCall = async () => {
+    let promises = [];
+    let endPoints = ["tv", "movie"];
+    let allGenres = {};
+
+    endPoints.forEach((url) => {
+      return promises.push(fetchDataFromApi(`/genre/${url}/list`));
+    });
+
+    const data = await Promise.all(promises);
+    data.map(({ genres }) => {
+      return genres.map((item) => (allGenres[item.id] = item));
+    });
+    dispatch(getGenres(allGenres));
+  };
+
   return (
     <BrowserRouter>
       <Header />
